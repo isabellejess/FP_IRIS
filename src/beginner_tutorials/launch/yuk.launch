@@ -1,0 +1,6 @@
+<launch>
+    <node name = "node_cam" pkg = "beginner_tutorials" type = "node_cam" output = "screen" respawn = "true" />
+    <node name = "node_pc" pkg = "beginner_tutorials" type = "node_pc" output = "screen" respawn = "true" />
+    <node name = "node_motor" pkg = "beginner_tutorials" type = "node_motor" output = "screen" respawn = "true" />
+
+</launch>

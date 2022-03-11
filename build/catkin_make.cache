@@ -1,0 +1,2 @@
+beginner_tutorials
+-DCATKIN_DEVEL_PREFIX=/home/ubuntu/final_project/devel -DCMAKE_INSTALL_PREFIX=/home/ubuntu/final_project/install -G Unix Makefiles
