@@ -34,14 +34,14 @@ class photo{
 };
 
 photo ball;
-std_msgs::Int16 x,y;
 
 void fungsi_callback (const ros::TimerEvent &event){
+    std_msgs::Int16 x,y;
     x.data= ball.getCenterX();
     y.data= ball.getCenterY();
     pub_cam_x.publish(x);
     pub_cam_y.publish(y);
-    //ROS_INFO("center %d %d", x.data, y.data);
+    // ROS_INFO("center %d %d", x.data, y.data);
 }
 
 
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     ros::MultiThreadedSpinner mts;
 
     Mat foto, foto_resize, foto_color, tresh;
-    foto = imread("/home/ubuntu/final_project/src/beginner_tutorials/src/aset/7.jpg");
+    foto = imread("/home/ubuntu/final_project/src/beginner_tutorials/src/aset/8.jpg");
     resize (foto,foto_resize, Size(1200,800));
     cvtColor(foto_resize, foto_color, COLOR_BGR2HSV);     
 
@@ -68,21 +68,29 @@ int main(int argc, char** argv) {
 
 
     inRange(foto_color, Scalar (L_H, L_S, L_V), Scalar(U_H, U_S, U_V), tresh);
-    Point2f center;
-    float radius;
-    vector<vector<Point>> contour;
-	vector<Vec4i> hierarchy;
-	findContours(tresh, contour, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
-    yc=center.x;
-    xc=center.y;
+    vector<vector<Point>> contours;
+    vector<Vec4i> hierarchy;
+    findContours(tresh, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
+    for (int i=0;i<contours.size();i++){
+            vector<Point>contours_lagi;
+            Point2f center;
+            float radius;
+            contours_lagi = contours[i];
+            minEnclosingCircle(contours_lagi,center,radius);
+
+            if (radius>=100 && radius <=150){
+                xc=center.y;
+                yc=center.x;
+            }
+    }
 
     ball.setCenterx(xc);
     ball.setCentery(yc);
 
-    timer_aja = nh.createTimer(ros::Duration(0.5),fungsi_callback);
+    timer_aja = nh.createTimer(ros::Duration(0.2),fungsi_callback);
 
-    pub_cam_x = nh.advertise<std_msgs::Int16>("posisi_awal_x",16);
-    pub_cam_y = nh.advertise<std_msgs::Int16>("posisi_awal_y",16);
+    pub_cam_x = nh.advertise<std_msgs::Int16>("posisi_target_x",16);
+    pub_cam_y = nh.advertise<std_msgs::Int16>("posisi_target_y",16);
 
     mts.spin();
 

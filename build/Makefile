@@ -285,19 +285,6 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
-# Target rules for targets named node_pc
-
-# Build rule for target.
-node_pc: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 node_pc
-.PHONY : node_pc
-
-# fast build rule for target.
-node_pc/fast:
-	$(MAKE) -f beginner_tutorials/CMakeFiles/node_pc.dir/build.make beginner_tutorials/CMakeFiles/node_pc.dir/build
-.PHONY : node_pc/fast
-
-#=============================================================================
 # Target rules for targets named node_motor
 
 # Build rule for target.
@@ -309,6 +296,19 @@ node_motor: cmake_check_build_system
 node_motor/fast:
 	$(MAKE) -f beginner_tutorials/CMakeFiles/node_motor.dir/build.make beginner_tutorials/CMakeFiles/node_motor.dir/build
 .PHONY : node_motor/fast
+
+#=============================================================================
+# Target rules for targets named node_pc
+
+# Build rule for target.
+node_pc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 node_pc
+.PHONY : node_pc
+
+# fast build rule for target.
+node_pc/fast:
+	$(MAKE) -f beginner_tutorials/CMakeFiles/node_pc.dir/build.make beginner_tutorials/CMakeFiles/node_pc.dir/build
+.PHONY : node_pc/fast
 
 #=============================================================================
 # Target rules for targets named beginner_tutorials_generate_messages_py
@@ -826,8 +826,8 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... node_pc"
 	@echo "... node_motor"
+	@echo "... node_pc"
 	@echo "... beginner_tutorials_generate_messages_py"
 	@echo "... beginner_tutorials_gennodejs"
 	@echo "... beginner_tutorials_generate_messages_nodejs"

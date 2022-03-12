@@ -31,11 +31,10 @@ add_executable(node_cam src/node_cam.cpp)
 target_link_libraries(node_cam ${catkin_LIBRARIES} ${OpenCV_LIBS})
 # add_dependencies(node_cam beginner_tutorials_generate_messages_cpp)
 
-add_executable(node_motor src/node_motor.cpp)
-target_link_libraries(node_motor ${catkin_LIBRARIES})
-# add_dependencies(node_motor beginner_tutorials_generate_messages_cpp)
-
 add_executable(node_pc src/node_pc.cpp)
 target_link_libraries(node_pc ${catkin_LIBRARIES})
 # add_dependencies(node_pc beginner_tutorials_generate_messages_cpp)
 
+add_executable(node_motor src/node_motor.cpp)
+target_link_libraries(node_motor ${catkin_LIBRARIES})
+# add_dependencies(node_motor beginner_tutorials_generate_messages_cpp)

@@ -168,21 +168,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-beginner_tutorials/CMakeFiles/node_pc.dir/rule:
-	cd /home/ubuntu/final_project/build && $(MAKE) -f CMakeFiles/Makefile2 beginner_tutorials/CMakeFiles/node_pc.dir/rule
-.PHONY : beginner_tutorials/CMakeFiles/node_pc.dir/rule
-
-# Convenience name for target.
-node_pc: beginner_tutorials/CMakeFiles/node_pc.dir/rule
-
-.PHONY : node_pc
-
-# fast build rule for target.
-node_pc/fast:
-	cd /home/ubuntu/final_project/build && $(MAKE) -f beginner_tutorials/CMakeFiles/node_pc.dir/build.make beginner_tutorials/CMakeFiles/node_pc.dir/build
-.PHONY : node_pc/fast
-
-# Convenience name for target.
 beginner_tutorials/CMakeFiles/node_motor.dir/rule:
 	cd /home/ubuntu/final_project/build && $(MAKE) -f CMakeFiles/Makefile2 beginner_tutorials/CMakeFiles/node_motor.dir/rule
 .PHONY : beginner_tutorials/CMakeFiles/node_motor.dir/rule
@@ -196,6 +181,21 @@ node_motor: beginner_tutorials/CMakeFiles/node_motor.dir/rule
 node_motor/fast:
 	cd /home/ubuntu/final_project/build && $(MAKE) -f beginner_tutorials/CMakeFiles/node_motor.dir/build.make beginner_tutorials/CMakeFiles/node_motor.dir/build
 .PHONY : node_motor/fast
+
+# Convenience name for target.
+beginner_tutorials/CMakeFiles/node_pc.dir/rule:
+	cd /home/ubuntu/final_project/build && $(MAKE) -f CMakeFiles/Makefile2 beginner_tutorials/CMakeFiles/node_pc.dir/rule
+.PHONY : beginner_tutorials/CMakeFiles/node_pc.dir/rule
+
+# Convenience name for target.
+node_pc: beginner_tutorials/CMakeFiles/node_pc.dir/rule
+
+.PHONY : node_pc
+
+# fast build rule for target.
+node_pc/fast:
+	cd /home/ubuntu/final_project/build && $(MAKE) -f beginner_tutorials/CMakeFiles/node_pc.dir/build.make beginner_tutorials/CMakeFiles/node_pc.dir/build
+.PHONY : node_pc/fast
 
 # Convenience name for target.
 beginner_tutorials/CMakeFiles/beginner_tutorials_generate_messages_py.dir/rule:
@@ -858,8 +858,8 @@ help:
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... edit_cache"
-	@echo "... node_pc"
 	@echo "... node_motor"
+	@echo "... node_pc"
 	@echo "... beginner_tutorials_generate_messages_py"
 	@echo "... beginner_tutorials_gennodejs"
 	@echo "... beginner_tutorials_generate_messages_nodejs"

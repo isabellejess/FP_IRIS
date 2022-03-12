@@ -8,31 +8,39 @@
 //publisher
 ros::Publisher pub_pc_x;
 ros::Publisher pub_pc_y;
-ros::Publisher pub_pc_sudut;
+ros::Publisher pub_pc_vx;
+ros::Publisher pub_pc_vy;
+ros::Publisher pub_pc_thetaf;
+ros::Publisher pub_pc_omega;
 
 //subscriber
-ros::Subscriber sub_cam;
+ros::Subscriber sub_cam_x;
+ros::Subscriber sub_cam_y;
 
 //timer
 ros::Timer timer_aja;
 
+
 class pc{
     private:
-    int x,y,xf,yf,vx,vy,omega,theta,thetaf;
+    int xf,yf,vx,vy,omega,thetaf;
 
     public:
     void atur (int kecx, int kecy){
         vx=kecx;
         vy=kecy;
     }
-
+    int getAturx(){
+        return vx;
+    }
+    int getAtury(){
+        return vy;
+    }
     void setCenterx (int xc){
         xf=xc;
-        
     }
     int getCenterx(){
         return xf;
-        
     }
     void setCentery (int yc){
         yf=yc;
@@ -46,107 +54,56 @@ class pc{
     int getThetaf(){
         return thetaf;
     }
+    void setOmega(int sudut){
+        omega=sudut;
+    }
     int getOmega(){
         return omega;
     }
-
-
-    void setPosisi(int a, int b){
-        int xf, yf;
-        while(ros::ok()){
-            ros::spinOnce();
-            if (b>=a){
-            for (int i=0;i<y;i++){
-                for (int j=0;j<x;j++){
-                    a=a+vx;
-                    }
-                }
-            }
-            else{
-                for (int j=0;j<x;j++){
-                    for (int i=0;i<y;i++){
-                        b=b+vy;
-                    }
-                }
-            }
-            x=a;
-            y=b;
-            if (x==xf && y==yf){
-                ros::shutdown();
-            }
-        }
-    }
-    
-    int getPosisix(){
-        return x;
-    }
-    int getPosisiy(){
-        return y;
-    }
-    void setTheta (int thet, int vtan){
-        ros::spinOnce();
-        omega=vtan;
-        if (thet>180){
-            thet=180-thet;
-        }
-        if (thet!=thetaf){
-            thet=thet+omega;
-        }   
-    }
-    int getTheta(){
-        return theta;
-    }
-
 };
 
 pc pic;
-void fungsi_callback (const ros::TimerEvent &event){
-    std_msgs::Int16 x;
-    std_msgs::Int16 y;
-    std_msgs::Int16 theta;
-    x.data=pic.getPosisix();
-    y.data=pic.getPosisiy();
-    theta.data=pic.getTheta();
-    pub_pc_x.publish(x);
-    pub_pc_y.publish(y);
-    pub_pc_sudut.publish(theta);
-    //ROS_INFO("nyoba %d %d %d",x.data,y.data,theta.data);
-}
-
+    
 void callback_cam_x (const std_msgs::Int16 &msg){
-    std_msgs::Int16 xcen;
     pic.setCenterx(msg.data);
 }
 void callback_cam_y (const std_msgs::Int16 &msg){
-    std_msgs::Int16 ycen;
     pic.setCentery(msg.data);
+}
+void fungsi_callback (const ros::TimerEvent &event){
+    std_msgs::Int16 x,y,vx,vy,theta,omega;
+    x.data=pic.getCenterx();
+    y.data=pic.getCentery();
+    vx.data=pic.getAturx();
+    vy.data=pic.getAtury();
+    theta.data=pic.getThetaf();
+    omega.data=pic.getOmega();
+    pub_pc_x.publish(x);
+    pub_pc_y.publish(y);
+    pub_pc_vx.publish(vx);
+    pub_pc_vy.publish(vy);
+    pub_pc_thetaf.publish(theta);
+    pub_pc_omega.publish(omega);
+    //ROS_INFO("tes %d %d %d %d %d %d\n",x.data,y.data,vx.data,vy.data,theta.data,omega.data);
 }
 
 int main(int argc, char **argv){
     ros::init(argc,argv, "node_pc");
     ros::NodeHandle nh;
     ros::MultiThreadedSpinner mts;
+    sub_cam_x = nh.subscribe("posisi_target_x", 16, callback_cam_x);
+    sub_cam_y = nh.subscribe("posisi_target_y", 16, callback_cam_y);
+    pub_pc_x = nh.advertise<std_msgs::Int16>("posisi_akhir_x",16);
+    pub_pc_y = nh.advertise<std_msgs::Int16>("posisi_akhir_y",16);
+    pub_pc_vx = nh.advertise<std_msgs::Int16>("kec_x",16);
+    pub_pc_vy = nh.advertise<std_msgs::Int16>("kec_y",16);
+    pub_pc_thetaf = nh.advertise<std_msgs::Int16>("sudut_akhir",16);
+    pub_pc_omega = nh.advertise<std_msgs::Int16>("kec_tan",16);
+    timer_aja = nh.createTimer(ros::Duration(0.2),fungsi_callback);
 
-    pic.atur(2,3);
-
-    pic.getCenterx();
-    pic.getCentery();
-    pic.setPosisi(0,0);
-    pic.setTheta(0,4);
-    pic.setThetaf(60);
-    pic.getThetaf();
-    pic.getOmega();
+    pic.atur(96,67);
+    pic.setThetaf(263);
+    pic.setOmega(17);
     
-
-    sub_cam = nh.subscribe("posisi_target", 16, callback_cam_x);
-    sub_cam = nh.subscribe("posisi_target", 16, callback_cam_y);
-
-    timer_aja = nh.createTimer(ros::Duration(0.5),fungsi_callback);
-    pub_pc_x = nh.advertise<std_msgs::Int16>("posisi_x",16);
-    pub_pc_y = nh.advertise<std_msgs::Int16>("posisi_y",16);
-    pub_pc_sudut = nh.advertise<std_msgs::Int16>("posisi_sudut",16);
-
-
     mts.spin();
 }
-
